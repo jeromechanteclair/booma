@@ -1,0 +1,130 @@
+{% extends "base.html.twig" %} 
+{% block body %}
+<style type="text/css">
+
+</style>
+<div class="container">
+<br>
+
+	
+
+<div class="row">
+	<div class="col-sm-2">
+		<img src="{{card.img}}" style="max-width: 100%;">
+	</div>
+	<div class="col-sm-10">
+		<div id="namefield">
+		<h2>{{card.name}}</h2><button onclick="AjaxForm('name')" ><i class="fa fa-edit fa-lg"></i></button>
+	</div>
+		<small>{% for subcategory in card.subcategories %}
+	{{ subcategory.name|e }}
+	{% endfor %}</small>
+		<hr>
+		
+		<div id="tags">
+	
+		<span>Tag1</span>
+		<span>Tag1</span>
+		<span>Tag1</span>
+	<span>	<a href="">+ </a></span>
+	</div>
+	</div>
+
+</div>
+
+<hr>
+
+<div class="row">
+	<div class="col-sm-8">
+		<h5>Notes</h5>
+		<span id="edit_notes"></span>
+		<button onclick="AjaxForm('notes')" ><i class="fa fa-edit fa-lg"></i></button>
+		<div id="notesfield">	{{card.notes}}</div>
+	
+		<hr>
+		<h5>Activité</h5>
+		<strong>Envoi le</strong>
+		<span>	{{card.send|date("m/d/Y")}}</span><br>
+		<strong>Relancé le</strong>
+		<span>	{{card.relance|date("m/d/Y")}}</span><br>
+		<strong>Status</strong>
+		<span>		{{card.status}}
+</span>
+	</div>
+	<div class="col-sm-4" style="border-left:1px solid #e4e4e4">
+		<h5>Réseau</h5>
+<a href="{{card.url}}"><i class="fa fa-link fa-lg"></i></a>
+		<a href="	{{card.facebook}}"><i class="fa fa-facebook fa-lg"></i></a>
+		<a href="	{{card.twitter}}"><i class="fa fa-twitter fa-lg"></i></a>
+		<a href="	{{card.instagram}}"><i class="fa fa-instagram fa-lg"></i></a>
+		<hr>
+		<h5>Adresse</h5>
+		<p>{{card.adress}}</p>
+		<hr>
+		<h5>Contacts</h5>
+		<strong>Jean Michel :</strong>
+		<span>jeanmiche@gmail.com</span>
+		<br>
+		<strong>Jean Guy :</strong>
+		<span>jeanguy@gmail.com</span>
+		<hr>
+		<a href="">Ajouter un contact </a>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+	</div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript">
+
+
+
+function AjaxForm2(value){
+$( this ).click(function(e) {
+	e.preventDefault();
+
+	$.ajax({
+	        url: '/card/{{card.id}}/'+value
+	      }).done(function( data ) {
+	      	$('#'+value+'field').html(data);
+
+	      });   
+
+	})
+
+ $('body').on('submit', '.ajaxForm', function (e) {
+ 
+        e.preventDefault();
+ 
+      
+                  location.reload(true);
+        })
+
+}
+
+
+		
+	
+function AjaxForm(value){
+
+$( this ).click(function(e) {
+	console.log($(this));
+	e.preventDefault();
+	console.log(value)
+		$.get('/card/{{card.id}}/'+value, function(data) {
+		$('#'+value+'field').html(data);
+		});
+
+	});
+
+}
+
+
+	
+</script>
+{% endblock %}

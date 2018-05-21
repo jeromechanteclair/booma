@@ -1,0 +1,108 @@
+{% extends "base.html.twig" %} 
+
+
+ {% block body %}
+<h2>Ajouter une sous catégorie</h2>
+
+
+ 
+ 
+    <div id="content">
+	{{ form_start(form,{ 'attr': {'class': 'form-control'} }) }}
+
+
+	{% for category in form.subcategories %}
+
+	{{ form_row(category)}}
+
+
+	{% endfor %}
+{{ form_end(form) }}
+
+
+    </div>
+       <button id="click">Ou ajouter une sous catégorie</button>
+       <div id="ajaxform"></div>
+<button>Ajouter des tags</button>
+<button>Terminer</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript">
+	
+	$.get('../../addsub', function(data) {
+
+	$( "#click" ).click(function() {
+	$('#ajaxform').html(data);
+	});
+
+	});
+
+	$.fn.serializeObject = function()
+	{
+	    var o = {};
+	    var a = this.serializeArray();
+	    $.each(a, function() {
+	        if (o[this.name] !== undefined) {
+	            if (!o[this.name].push) {
+	                o[this.name] = [o[this.name]];
+	            }
+	            o[this.name].push(this.value || '');
+	        } else {
+	            o[this.name] = this.value || '';
+	        }
+	    });
+	    return o;
+	};
+	$(document).on("submit", ".sub", function(e){
+	  e.preventDefault();
+
+	  // get the properties and values from the form
+	  data = $(".sub").serializeObject();
+	console.log(data)
+	  // always makes sense to signal user that something is happening
+
+
+
+	  $.ajax({
+	    url: '../../addsub',
+	    type: 'POST',
+	    dataType: 'json',
+	    data: data,
+	    success:function(data){
+	    
+	    }
+	  });
+	  location.reload(true);
+	});
+
+
+$( "input" ).each(function(){
+
+	if ($(this).is(':checked')) {
+
+		 $(this).parent().addClass("selected");
+	}
+	$(this).click(function(){
+
+ $(this).parent().toggleClass("selected");
+
+	})
+	$(this).parent().addClass('sub');
+})
+
+if ($('input').is(':checked')) {
+
+	 $(this).parent().addClass("selected");
+}
+$( "input" ).parent().each(function(){
+
+	$(this).parent().click(function(){
+
+	$(this).attr("checked", "checked");
+
+	})
+
+})
+
+</script>
+{% endblock %}

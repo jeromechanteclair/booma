@@ -1,0 +1,82 @@
+{# templates/base.html.twig #}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Test Application{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body><style type="text/css">
+    body{overflow-x: hidden;}
+#sidebar{
+    position: fixed;
+    left:0px;
+    height: 100vh;
+    width: 15vw;
+    background-color: #f7f7f7;
+    border-right: 1px solid #e5e5e5;
+    color:white;
+
+}
+#sidebar a{
+        padding-left: 20px;
+}
+#content{
+    position: relative;
+    left:15vw;
+    width: 85vw;
+}
+.headlist{display: flex;flex-flow: row wrap; justify-content: space-between;align-items: center;}
+.addmore{border:1px solid #e5e5e5;
+    background-color: white;
+    padding: 15px 0;}
+.subheader{position: fixed;z-index: 99;
+background-color: white;}
+.items{position: relative;top:180px;}
+    
+.sub{background-color: lightgrey;display: inline-block;padding: 10px 5px;margin-bottom: 10px;}
+
+.selected{background-color: red;}
+#tags span{border:1px solid #e7e7e7;padding: 5px 15px;background-color: #f7f7f7;}
+.modal-dialog{max-width: 80vw;height: 80vh;}
+</style>
+        <div id="sidebar">
+            {% block sidebar %}
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                </ul>
+            {% endblock %}
+        </div>
+
+        <div id="content">
+            {% block body %}{% endblock %}
+        </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+    
+ /*
+jQuery.ajax({
+ 
+      type: "GET",
+      url: '/categorylist',
+      dataType: "html",
+      cache:false,
+      success: function (data) {
+        jQuery('#sidebar').html(data);
+      },
+      complete: function () {
+  
+      },
+    });
+ 
+*/
+
+  
+</script>
+
+</body>
+</html>

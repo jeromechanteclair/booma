@@ -1,0 +1,225 @@
+{% extends "base.html.twig" %} 
+{% block body %}
+<div class="container">
+	<div class="subheader container">
+	<br>
+
+		<div class="headlist">
+			<div>	<h1>{{category.name}}</h1></div>
+<div> <button type="button" class="btn btn-info" id="addnewcard" data-toggle="modal" data-target="#exampleModal">Ajouter une carte</button>
+				    </div>
+			<div>
+				<form  method="get" action="/dashboard/{{category.name|lower}}/?filter=">
+				<select name="filter" class="custom-select" id='filter' onchange="this.form.submit()">
+					<optgroup label="Subcategories">
+					<option  value="all">Toutes les catégories</option>
+
+				
+				
+
+				
+					<hr>
+					</optgroup>
+					<optgroup label="Add">
+					<option >Ajouter une categorie</option>
+					</optgroup>
+
+				</select>
+			
+			</form>
+			</div>
+		</div>
+
+		<hr>
+		<div class="tags">
+			<span>Tag 1</span>
+			<span>Tag 1</span>
+			<span>Tag 1</span>
+
+			<span>Tag 1</span>
+		</div>
+		<hr>
+	</div>
+	<div class="items container">
+		<div class="row" id="cards">
+			
+		
+			
+		
+	
+			
+	</div>
+
+	<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+ {{ form_start(form,{ 'attr': {'id': 'sub'} }) }}{{ form_widget(form) }}{{ form_end(form) }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript">
+
+
+$(document).ready(function() { 
+var vars = [], hash;
+
+function getUrlVars()
+{
+    
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+
+    return vars;
+}
+getUrlVars()
+
+
+
+var cards;
+var subcategories;
+var categoryFilter;
+function getResponse(){
+$.get("/category/{{category.id}}", function(json){
+	    cards = json.cards;
+		categoryFilter = json.subcategories;
+
+	}).done(function(){
+
+		getSubcategories()
+		if (window.location.href.indexOf("all") != -1 ||window.location.href.indexOf("?") == -1 ){
+					displayAllDatas()	
+			console.log('ok')
+		}
+
+		
+				displayFilteredData()
+
+	});
+
+}
+function getSubcategories(){
+
+	for( category of categoryFilter){
+
+$('option').each(function(){
+
+
+if ($(this).attr('value')== vars.filter){
+
+$(this).attr('selected', true)
+
+}
+})
+		if (window.location.href.indexOf(category.name) != -1 ){
+			console.log('yes')
+		}
+
+	$('.custom-select>optgroup:first-child').append('<option value="'+category.name+'" name="'+category.name+'">'+category.name+'</option>')
+
+	}
+
+}
+function displayAllDatas(){
+
+	for (card of cards){
+
+		displayCards()
+
+
+	}
+
+
+}	
+
+
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+
+})
+
+function getCard(id){
+
+console.log(id)
+
+}
+function displayCards(){
+
+  $('#cards').prepend('	<div class="col-sm-2"><div class="card card_'+card.id+'" style=""><img class="card-img-top" src="'+card.img+'" alt="Card image cap"> <div class="card-body"><h5 class="card-title">'+card.name+'</h5> <p class="card-text"></p><a href="/card/'+card.id+'">link</a></div></div>  </div>  				    ')
+
+ 
+$('.card_'+card.id+' button').on('click', function(){
+
+	console.log($(cards))
+})
+
+}
+
+
+
+
+function displayFilteredData(){
+
+var currentfilter=decodeURI(vars.filter);
+
+
+for (card of cards) {
+	//console.log(card.subcategories)
+	for(subcategory of card.subcategories){
+		var subcategoryArray=[];
+		
+		subcategoryArray=subcategory
+
+
+		//console.log(subcategory.name	)
+		if (subcategory.name.replace(/ /g,'+')==currentfilter){
+displayCards()
+		}
+	//	console.log(vars.filter)
+
+	}
+	
+
+}
+/*	for (var i = 0;i<=cards.length;i++) {
+	console.log(cards[i].subcategories[0])
+
+
+
+
+	$('#cards').append(cards[i].name)
+	}
+*/
+}
+getResponse();
+
+
+})
+
+
+
+	
+</script>
+{% endblock %}
