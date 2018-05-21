@@ -112,15 +112,15 @@ $( this ).click(function(e) {
 	
 function AjaxForm(value){
 
-$( this ).click(function(e) {
+
 	console.log($(this));
-	e.preventDefault();
+	
 	console.log(value)
 		$.get('/card/{{card.id}}/'+value, function(data) {
 		$('#'+value+'field').html(data);
 		});
 
-	});
+
 
 }
 

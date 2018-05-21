@@ -5,9 +5,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
+use JMS\Serializer\Annotation\Expose;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
+ * @JMS\ExclusionPolicy("all")
  */
 class Card
 {
@@ -15,12 +19,14 @@ class Card
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"category_items", "group2"})
+     * * @JMS\Groups({"default","tags"})
+        * @Expose
      */
     private $id;
 
     /**
-    * @Groups({"category_items", "group2"})
+   * @JMS\Groups({"default"})
+      * @Expose
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -31,12 +37,15 @@ class Card
     private $url;
      /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"category_items", "group2"})
+      * @JMS\Groups({"default"})
+         * @Expose
      */
     private $img;
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag",mappedBy="cards",cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
+      * @JMS\Groups({"default"})
+         * @Expose
      * @ORM\JoinTable(name="card_tags")
      */
     private $tags;
@@ -48,7 +57,8 @@ class Card
     private $category;
      /**
      * @ORM\ManyToMany(targetEntity="App\Entity\SubCategory", mappedBy="cards",cascade={"persist"})
-    *@Groups({"category_items", "group2"})
+   * @JMS\Groups({"default"})
+      * @Expose
     * @ORM\JoinTable(name="card_subcategory")
      */
     private $subcategories ;

@@ -8,6 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Goutte\Client;
+use FOS\RestBundle\Controller\Annotations\Get;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerBuilder;
 class tagController extends Controller
 {
     public function index()
@@ -43,7 +46,7 @@ class tagController extends Controller
 
 
 
-			  return new Response('Saved new card with id '.$tag->getId());
+			  return new Response('Saved new tag with id '.$tag->getId());
 		}
 
      
@@ -54,10 +57,10 @@ class tagController extends Controller
     /**
      * @Route("/tag/{id}/list", name="tag_list")
      */
-  public function list($id){
+  public function getalltaggedcards($id){
 
   	$entityManager = $this->getDoctrine()->getManager();
-  	$tag = $entityManager->getRepository(Tag::class)->find($id);
+  	$tag = $entityManager->getRepository(Tag::class)->find();
     $tagitems = $tag->getCards();
    // var_dump($tagitems);
 
@@ -65,4 +68,27 @@ class tagController extends Controller
         	['tagitems'=>$tagitems,]);
 
   }
+     /**
+     * @Get(
+     *     path = "/tags/",
+     *     name = "tags_list",
+     *  
+     * )
+     * 
+     */
+
+
+  public function list(){
+    $entityManager = $this->getDoctrine()->getManager();
+    $tags = $entityManager->getRepository(Tag::class)->findAll();
+    $serializer = SerializerBuilder::create()->build();
+
+
+    $response = new Response( $serializer->serialize($tags, 'json', SerializationContext::create()->setGroups(array('tags'))),Response::HTTP_OK);
+    $response->headers->set('Content-Type', 'application/json');
+    return $response;
+  }
+
+
+
 }

@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\View;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\SerializationContext;
+
 class categoryController  extends FOSRestController
 {
   
@@ -108,8 +111,10 @@ class categoryController  extends FOSRestController
   public function showSingleData($id){
     $entityManager = $this->getDoctrine()->getManager();
     $category_items = $entityManager->getRepository(Category::class)->find($id);
-    $serializer = $this->container->get('serializer');
-    $response = new Response($serializer->serialize($category_items, 'json',array('groups' => array('category_items'))),Response::HTTP_OK);
+    $serializer = SerializerBuilder::create()->build();
+
+
+    $response = new Response( $serializer->serialize($category_items, 'json', SerializationContext::create()->setGroups(array('default'))),Response::HTTP_OK);
     $response->headers->set('Content-Type', 'application/json');
     return $response;
   }

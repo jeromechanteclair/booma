@@ -5,24 +5,29 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation as JMS;
+use JMS\Serializer\Annotation\Expose;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @JMS\ExclusionPolicy("all")
+
  */
 class Category
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({ "category_list"})
+     * @JMS\Groups({"default"})
+        * @Expose
      * @ORM\Column(type="integer")
-      * @Groups({"category_items", "category_list"})
+   
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-    * @Groups({"category_items", "category_list"})
+      * @Expose
+     * @JMS\Groups({"default"})
      */
     private $name;
 
@@ -32,13 +37,14 @@ class Category
     private $color;
      /**
      * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="category")
-    * @Groups({"category_items", "group2"})
-    *@Serializer\Expose()
+    * @JMS\Groups({"default"})
+ * @Expose
      */
     private $cards;
       /**
      * @ORM\OneToMany(targetEntity="App\Entity\SubCategory", mappedBy="category")
-     @Groups({ "category_items","group2"})
+ * @JMS\Groups({"default"})
+ * @Expose
      */
     private $subcategories;
 

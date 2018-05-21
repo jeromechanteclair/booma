@@ -32,11 +32,7 @@
 
 		<hr>
 		<div class="tags">
-			<span>Tag 1</span>
-			<span>Tag 1</span>
-			<span>Tag 1</span>
-
-			<span>Tag 1</span>
+		
 		</div>
 		<hr>
 	</div>
@@ -91,7 +87,7 @@ function getUrlVars()
         vars.push(hash[0]);
         vars[hash[0]] = hash[1];
     }
-
+    	//console.log(vars);
     return vars;
 }
 getUrlVars()
@@ -120,6 +116,26 @@ $.get("/category/{{category.id}}", function(json){
 	});
 
 }
+function getTags(){
+	$.get("/tags", function(json){
+	    tags = json.tags;
+		
+
+	}).done(function(tags){
+	
+		for(tag of tags){
+			$('.tags').append(tag.name+' ')
+		}
+				
+		
+	
+
+		
+			
+	});
+
+}
+getTags();
 function getSubcategories(){
 
 	for( category of categoryFilter){
@@ -183,19 +199,19 @@ $('.card_'+card.id+' button').on('click', function(){
 function displayFilteredData(){
 
 var currentfilter=decodeURI(vars.filter);
-
+console.log(currentfilter);
 
 for (card of cards) {
-	//console.log(card.subcategories)
+	console.log(card)
 	for(subcategory of card.subcategories){
 		var subcategoryArray=[];
 		
 		subcategoryArray=subcategory
-
+		//console.log(subcategory);	
 
 		//console.log(subcategory.name	)
 		if (subcategory.name.replace(/ /g,'+')==currentfilter){
-displayCards()
+		displayCards()
 		}
 	//	console.log(vars.filter)
 

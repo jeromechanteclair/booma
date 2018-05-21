@@ -37,9 +37,10 @@ function initAjaxForm()
         })
         .done(function (data) {
             if (typeof data.message !== 'undefined') {
-                alert(data.message);
+             //   alert(data.message);
+                  location.reload(true);
             }
-                 // location.reload(true);
+                
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
             if (typeof jqXHR.responseJSON !== 'undefined') {

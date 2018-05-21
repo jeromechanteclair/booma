@@ -5,21 +5,28 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation as JMS;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SubCategoryRepository")
+  * @JMS\ExclusionPolicy("all")
+
  */
 class SubCategory
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     *@Groups({"category_items", "group2"})
+      * @JMS\Groups({"default"})
+        * @Expose
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-    *@Groups({"category_items", "group2"})
+      * @JMS\Groups({"default"})
+        * @Expose
      * @ORM\Column(type="string", length=255)
      
      */
